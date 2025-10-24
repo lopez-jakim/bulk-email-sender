@@ -1,0 +1,4 @@
+.venv
+*.csv
+/certificates_1
+/certificates_2
