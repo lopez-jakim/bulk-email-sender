@@ -38,7 +38,7 @@ def attach_certificate_to_email(message, cert_path):
     message.add_attachment(
         cert_data,
         maintype="application",
-        subtype="pdf",
+        subtype="jpg",
         filename=cert_name
     )
 
