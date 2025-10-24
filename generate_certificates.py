@@ -2,11 +2,14 @@ import os
 import smtplib
 import pandas as pd
 from email.message import EmailMessage
+from dotenv import load_dotenv
+
+load_dotenv()
 
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-SENDER_EMAIL = "<input email>"
-APP_PASSWORD = "<input app password>"
+SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+APP_PASSWORD = os.getenv("APP_PASSWORD")
 CSV_FILE = "participants_test.csv"
 
 def load_participants_from_csv(file_path):
