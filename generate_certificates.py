@@ -54,6 +54,26 @@ def create_email_body_html(participant_name):
     """
     return html
 
+def create_email_body_plain(participant_name):
+    text = f"""Dear {participant_name},
+
+On behalf of the Emergency Response Group, we sincerely 
+thank you for your active participation in our Wellness 
+Program last March 19 (Wednesday) at the Engineering Grounds.
+
+We hope the activities not only provided valuable insights 
+into health and wellness but also encouraged you to prioritize 
+your well-being in your daily lives.
+
+Once again, thank you for being part of this journey with us. 
+Let's continue making wellness a priority!
+
+Best regards,
+Jakim D. Lopez - VP of Records
+Emergency Response Group (ERG)
+"""
+    return text
+
 def create_email_message(sender_email, participant_email,
                           participant_name, cert_path):
     message = EmailMessage()
@@ -61,8 +81,10 @@ def create_email_message(sender_email, participant_email,
     message["To"] = participant_email
     message["Subject"] = "Certificate of Appreciation"
 
+    plain_body = create_email_body_plain(participant_name)
     html_body = create_email_body_html(participant_name)
     
+    message.set_content(plain_body)
     message.add_alternative(html_body, subtype='html')
     
     attach_certificate_to_email(message, cert_path)
