@@ -1,5 +1,6 @@
 import os
 import smtplib
+import base64
 import pandas as pd
 from email.message import EmailMessage
 from dotenv import load_dotenv
@@ -12,6 +13,7 @@ SENDER_EMAIL = os.getenv("SENDER_EMAIL")
 APP_PASSWORD = os.getenv("APP_PASSWORD")
 CSV_FILE = "participants_test.csv"
 EMAIL_TEMPLATE_FILE = "erg_ga_email_template.html"
+BANNER_IMAGE_FILE = "erg_banner.png"
 
 def load_participants_from_csv(file_path):
     return pd.read_csv(file_path)
@@ -19,7 +21,16 @@ def load_participants_from_csv(file_path):
 def create_email_body_html(participant_name):
   with open(EMAIL_TEMPLATE_FILE, "r", encoding="utf-8") as file:
     html = file.read()
-  return html.replace("{participant_name}", participant_name)
+  
+  # Read and encode the banner image to base64
+  with open(BANNER_IMAGE_FILE, "rb") as img_file:
+    img_data = base64.b64encode(img_file.read()).decode()
+  
+  # Replace placeholders
+  html = html.replace("{participant_name}", participant_name)
+  html = html.replace("{erg_banner}", f"data:image/png;base64,{img_data}")
+  
+  return html
 
 def create_email_message(sender_email, participant_email,
                           participant_name, cert_path):
