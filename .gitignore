@@ -1,5 +1,8 @@
 .venv
 .env
+*.png
+*.jpg
+*.jpeg
 *.csv
 /certificates_1
 /certificates_2
