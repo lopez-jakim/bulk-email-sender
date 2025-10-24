@@ -1,0 +1,1 @@
+customizable bulk email sender using Python & Google SMTP
