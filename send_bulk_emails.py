@@ -1,8 +1,12 @@
 import os
 import smtplib
-import base64
 import pandas as pd
 from email.message import EmailMessage
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
+from email.mime.base import MIMEBase
+from email import encoders
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -22,30 +26,35 @@ def create_email_body_html(participant_name):
   with open(EMAIL_TEMPLATE_FILE, "r", encoding="utf-8") as file:
     html = file.read()
   
-  # Read and encode the banner image to base64
-  with open(BANNER_IMAGE_FILE, "rb") as img_file:
-    img_data = base64.b64encode(img_file.read()).decode()
-  
   # Replace placeholders
   html = html.replace("{participant_name}", participant_name)
-  html = html.replace("{erg_banner}", f"data:image/png;base64,{img_data}")
+  html = html.replace("{erg_banner}", "cid:erg_banner")
   
   return html
 
 def create_email_message(sender_email, participant_email,
                           participant_name, cert_path):
-    message = EmailMessage()
-    message["From"] = sender_email
-    message["To"] = participant_email
-    message["Subject"] = "Certificate of Appreciation"
+    msg = MIMEMultipart('related')
+    msg["From"] = sender_email
+    msg["To"] = participant_email
+    msg["Subject"] = "Certificate of Appreciation"
 
     html_body = create_email_body_html(participant_name)
     
-    message.add_alternative(html_body, subtype='html')
+    msg.attach(MIMEText(html_body, 'html'))
     
-    attach_certificate_to_email(message, cert_path)
+    # Attach ERG banner as inline image with CID
+    with open(BANNER_IMAGE_FILE, "rb") as img_file:
+        img = MIMEImage(img_file.read())
+        img.add_header('Content-ID', '<erg_banner>')
+        img.add_header('Content-Disposition', 'inline', 
+                       filename='erg_banner.png')
+        msg.attach(img)
     
-    return message
+    # Attach certificate
+    attach_certificate_to_email(msg, cert_path)
+    
+    return msg
 
 def attach_certificate_to_email(message, cert_path):
     if not os.path.exists(cert_path):
@@ -56,12 +65,14 @@ def attach_certificate_to_email(message, cert_path):
         cert_data = file.read()
         cert_name = os.path.basename(cert_path)
     
-    message.add_attachment(
-        cert_data,
-        maintype="application",
-        subtype="jpg",
-        filename=cert_name
+    part = MIMEBase("application", "octet-stream")
+    part.set_payload(cert_data)
+    encoders.encode_base64(part)
+    part.add_header(
+        "Content-Disposition",
+        f"attachment; filename= {cert_name}"
     )
+    message.attach(part)
 
 def send_email(message):
     try:
