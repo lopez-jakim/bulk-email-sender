@@ -62,7 +62,7 @@ def process_and_send_certificate():
         participant_name = row["Name"]
         participant_email = row["Email"]
         cert_path = os.path.join(
-            "certificates",
+            "certificate_2",
             row["Certificate File"]
         )
         total_emails += 1
