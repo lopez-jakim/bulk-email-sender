@@ -1,7 +1,6 @@
 import os
 import smtplib
 import pandas as pd
-from email.message import EmailMessage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
