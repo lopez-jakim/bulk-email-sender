@@ -30,16 +30,20 @@
               box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
     
     <!-- Header Image -->
+    <!-- Adjust header size: Change 'max-height' to control banner height -->
     <div style="width: 100%; 
                 background-color: #ffffff !important; 
-                text-align: center;">
+                text-align: center; 
+                overflow: hidden;">
       <img src="{erg_header}" 
            alt="Emergency Response Group" 
            style="width: 100%; 
-                  max-width: 800px; 
+                  max-width: 100%; 
+                  max-height: 220px; 
                   height: auto; 
                   display: block; 
-                  margin: 0;">
+                  margin: 0; 
+                  object-fit: cover;">
     </div>
     
     <!-- Content Area -->
@@ -128,9 +132,10 @@
         Best regards,
       </p>
       
+      <!-- Adjust calling card size: Change 'max-width' value below -->
       <img src="{erg_calling_card}" 
            alt="Jakim D. Lopez - ERG Public Relations Officer" 
-           style="max-width: 500px; 
+           style="max-width: 350px; 
                   height: auto; 
                   display: block; 
                   margin-top: 16px;">
@@ -146,16 +151,6 @@
                 color: #6c757d !important; 
                 margin: 0; 
                 text-align: center; 
-                line-height: 1.6;">
-        <strong>DISCLAIMER:</strong> This email and 
-        attachment are intended only for the recipient 
-        named above. If you received this in error, 
-        kindly delete it immediately.
-      </p>
-    </div>
-    
-    <!-- Colorful Footer Bar -->
-    <div style="height: 6px; 
                 background: linear-gradient(90deg, 
                             #4169E1 0%, 
                             #DC143C 33%, 
