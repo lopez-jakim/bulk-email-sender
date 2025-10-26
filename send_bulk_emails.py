@@ -44,7 +44,7 @@ def create_email_message(sender_email, participant_email,
     msg.attach(MIMEText(html_body, 'html'))
     
     # Attach ERG banner as inline image with CID
-    with open(BANNER_IMAGE_FILE, "rb") as img_file:
+    with open(CALLING_CARD_FILE, "rb") as img_file:
         img = MIMEImage(img_file.read())
         img.add_header('Content-ID', '<erg_calling_card>')
         img.add_header('Content-Disposition', 'inline', 
