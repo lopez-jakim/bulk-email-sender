@@ -18,6 +18,7 @@ APP_PASSWORD = os.getenv("APP_PASSWORD")
 CSV_FILE = "participants_test.csv"
 EMAIL_TEMPLATE_FILE = "erg_ga_email_template.html"
 CALLING_CARD_FILE = "erg_calling_card.png"
+HEADER_FILE = "erg_header.png"
 
 def load_participants_from_csv(file_path):
     return pd.read_csv(file_path)
@@ -29,6 +30,7 @@ def create_email_body_html(participant_name):
   # Replace placeholders
   html = html.replace("{participant_name}", participant_name)
   html = html.replace("{erg_calling_card}", "cid:erg_calling_card")
+  html = html.replace("{erg_header}", "cid:erg_header")
   
   return html
 
@@ -43,12 +45,18 @@ def create_email_message(sender_email, participant_email,
     
     msg.attach(MIMEText(html_body, 'html'))
     
-    # Attach ERG banner as inline image with CID
+    # Attach ERG header as inline image with CID
+    with open(HEADER_FILE, "rb") as img_file:
+        img = MIMEImage(img_file.read())
+        img.add_header('Content-ID', '<erg_header>')
+        img.add_header('Content-Disposition', 'inline')
+        msg.attach(img)
+    
+    # Attach ERG calling card as inline image with CID
     with open(CALLING_CARD_FILE, "rb") as img_file:
         img = MIMEImage(img_file.read())
         img.add_header('Content-ID', '<erg_calling_card>')
-        img.add_header('Content-Disposition', 'inline', 
-                       filename='erg_calling_card.png')
+        img.add_header('Content-Disposition', 'inline')
         msg.attach(img)
     
     # Attach certificate
