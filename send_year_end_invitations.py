@@ -23,12 +23,12 @@ def create_email_body_html(row):
         html = file.read()
     
     # Replace all merge tags with actual values from CSV
-    html = html.replace("{{ NICKNAME }}", str(row.get("Nickname", row["Name"])))
-    html = html.replace("{{ DEPARTMENT }}", str(row.get("Department", "AWS Cloud Club")))
-    html = html.replace("{{ ROLE }}", str(row.get("Role", "Member")))
-    html = html.replace("{{ AWS_ID }}", str(row.get("AWS_ID", "")))
-    html = html.replace("{{ NAME }}", str(row["Name"]))
-    
+    html = html.replace("{{ NICKNAME }}", row.get("NICKNAME", row["NAME"]))
+    html = html.replace("{{ DEPARTMENT }}", row.get("DEPARTMENT", "AWS Cloud Club"))
+    html = html.replace("{{ ROLE }}", row.get("ROLE", "Member"))
+    html = html.replace("{{ AWS_ID }}", row.get("AWS_ID", ""))
+    html = html.replace("{{ NAME }}", row["NAME"])
+
     return html
 
 def create_email_message(sender_email, participant_email, participant_row):
@@ -68,11 +68,11 @@ def send_year_end_invitations():
     print(f"Using template: {EMAIL_TEMPLATE_FILE}\n")
     
     for _, row in participants.iterrows():
-        participant_name = row["Name"]
-        participant_email = row["Email"]
+        participant_name = row["NAME"]
+        participant_email = row["EMAIL"]
         total_emails += 1
         
-        print(f"Preparing email for {participant_name} ({row.get('Nickname', 'N/A')})...")
+        print(f"Preparing email for {participant_name} ({row.get('NICKNAME', 'N/A')})...")
         
         email_message = create_email_message(
             SENDER_EMAIL,
