@@ -1,6 +1,7 @@
 .venv
 .env
 FOR-INTERNALS.html
+TEST.html
 *.png
 *.jpg
 *.jpeg
