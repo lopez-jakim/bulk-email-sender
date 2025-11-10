@@ -23,11 +23,11 @@ def create_email_body_html(row):
         html = file.read()
     
     # Replace all merge tags with actual values from CSV
-    html = html.replace("{{ NICKNAME }}", row.get("NICKNAME", row["NAME"]))
-    html = html.replace("{{ DEPARTMENT }}", row.get("DEPARTMENT", "AWS Cloud Club"))
-    html = html.replace("{{ ROLE }}", row.get("ROLE", "Member"))
-    html = html.replace("{{ AWS_ID }}", row.get("AWS_ID", ""))
-    html = html.replace("{{ NAME }}", row["NAME"])
+    html = html.replace("{{ NAME }}", str(row["NAME"]))
+    html = html.replace("{{ NICKNAME }}", str(row["NICKNAME"]))
+    html = html.replace("{{ DEPARTMENT }}", str(row["DEPARTMENT"]))
+    html = html.replace("{{ ROLE }}", str(row["ROLE"]))
+    html = html.replace("{{ AWS_ID }}", str(row["AWS_ID"]))
 
     return html
 
